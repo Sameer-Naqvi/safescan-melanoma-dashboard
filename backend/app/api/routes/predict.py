@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from app.ml.predictor import predict
+from app.services.websocket_manager import manager
 import uuid
 
 router = APIRouter()
@@ -22,7 +23,7 @@ async def predict_image(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Inference failed: {str(e)}")
 
-    return {
+    response = {
         "image_id": image_id,
         "filename": file.filename,
         "age": age,
@@ -30,3 +31,23 @@ async def predict_image(
         "site": site,
         **result
     }
+
+    # Broadcast to all connected dashboards if HIGH risk
+    if result["risk_level"] == "HIGH":
+        await manager.broadcast({
+            "type": "ALERT",
+            "image_id": image_id,
+            "filename": file.filename,
+            "confidence": result["confidence"],
+            "action": result["action"],
+        })
+    else:
+        await manager.broadcast({
+            "type": "UPDATE",
+            "image_id": image_id,
+            "filename": file.filename,
+            "confidence": result["confidence"],
+            "action": result["action"],
+        })
+
+    return response
