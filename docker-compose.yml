@@ -1,0 +1,39 @@
+﻿version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: safescan_db
+      POSTGRES_USER: safescan_user
+      POSTGRES_PASSWORD: safescan_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://safescan_user:safescan_pass@postgres:5432/safescan_db
+      MODEL_VERSION: 1.0.0
+      HIGH_RISK_THRESHOLD: 0.80
+    volumes:
+      - ./ml_engine/models:/ml_engine/models
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

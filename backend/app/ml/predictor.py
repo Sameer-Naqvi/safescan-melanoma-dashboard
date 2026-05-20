@@ -1,10 +1,11 @@
+﻿import os
 import joblib
 import numpy as np
 import cv2
 from skimage.feature import hog
 from pathlib import Path
 
-MODEL_PATH = Path(__file__).resolve().parents[3] / "ml_engine" / "models" / "logreg_val.pkl"
+MODEL_PATH = Path(os.getenv("MODEL_PATH", str(Path(__file__).resolve().parents[3] / "ml_engine" / "models" / "logreg_val.pkl")))
 
 model = joblib.load(MODEL_PATH)
 
@@ -44,7 +45,7 @@ def extract_features(
         block_norm="L2-Hys",
     )
 
-    # Color stats — mean + std per BGR channel
+    # Color stats â€” mean + std per BGR channel
     img_float = img.astype(np.float32) / 255.0
     color_features = []
     for channel in range(3):
