@@ -94,28 +94,6 @@ CREATE USER safescan_user WITH PASSWORD 'safescan_pass';
 GRANT ALL PRIVILEGES ON DATABASE safescan_db TO safescan_user;
 ```
 
----
-
-## Project Structure
-safescan/
-├── backend/
-│   ├── app/
-│   │   ├── api/routes/        # predict.py, alerts.py, audit.py
-│   │   ├── db/                # SQLAlchemy models and session
-│   │   ├── ml/                # Feature extraction and inference
-│   │   └── services/          # WebSocket connection manager
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── components/        # AlertBanner, ImageGrid, UploadPanel, AuditLog
-│   │   ├── hooks/             # useWebSocket.js
-│   │   └── pages/             # Dashboard.jsx
-│   └── Dockerfile
-├── ml_engine/
-│   └── models/                # logreg_val.pkl (not tracked in git)
-└── docker-compose.yml
-
 ## Author
 
 **Sameer Naqvi**
