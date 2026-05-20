@@ -2,19 +2,6 @@
 
 A full-stack, containerized web application that simulates a hospital imaging environment. Medical scans are analyzed by a machine learning model in real-time, with high-risk findings instantly broadcast to a live dashboard via WebSockets.
 
-Built as a portfolio project targeting IT Analyst and Full-Stack Engineer roles at PHSA (Provincial Health Services Authority).
-
----
-
-## Live Demo
-
-| Service   | URL                          |
-|-----------|------------------------------|
-| Dashboard | http://localhost:5173        |
-| API Docs  | http://localhost:8000/docs   |
-| Health    | http://localhost:8000/health |
-
----
 
 ## Tech Stack
 
@@ -58,7 +45,7 @@ The model was trained on the **ISIC 2020 Melanoma Detection Dataset** using a su
 - Every prediction broadcasts to all connected dashboard clients instantly
 - HIGH risk triggers a red alert banner and session stats update
 
-### Phase 3 — PHSA-Style Audit Log
+### Phase 3 — Audit Log
 - Every prediction is persisted to PostgreSQL with full traceability
 - Logged fields: timestamp, image_id, filename, model_version, confidence, risk_level, action_taken, age, sex, site
 - Audit table visible in the dashboard, auto-refreshing every 10 seconds
